@@ -13,12 +13,23 @@ initBoard([
 [ [0|0], [0|0], [0|0], [0|0], [0|0], [0|0], [0|0], [0|0], [0|0], [0|0], [0|0], [0|0], [0|0] ],
 [ [0|0], [0|0], [0|0], [0|0], [0|0], [0|0], [0|0], [0|0], [0|0], [0|0], [0|0], [0|0], [0|0] ],
 [ [0|0], [0|0], [0|0], [0|0], [0|0], [0|0], [0|0], [0|0], [0|0], [0|0], [0|0], [0|0], [0|0] ]
-]).
+]
+).
 
 % Print triangles
 printTriangle([0|_]) :- write('|  ').
-printTriangle([1|_]) :- write('|/\\').
-printTriangle([2|_]) :- write('|\\/').
+printTriangle([1|1]) :- 	write('| '),
+							name(C,[9651]), 
+							write(C).
+printTriangle([1|2]) :- 	write('| '),
+							name(C,[9650]), 
+							write(C).
+printTriangle([2|1]) :- 	write('| '),
+							name(C,[9661]), 
+							write(C).
+printTriangle([2|2]) :- 	write('| '),
+							name(C,[9660]), 
+							write(C).							
 
 % Print utils
 printBoarder:- write('----------------------------------------\n').
