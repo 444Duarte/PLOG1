@@ -10,9 +10,9 @@ menu_option(2):-write('/////////////\n'),
 				write('/////////////\n\n'),
 				write('Players alternate playing adjacent to the existing pattern.\nThe first player to form a four tile triangle with his color on all three tips (and either color in the center) wins.\n'),
 				write('\nInsert key any to go back\n'),	
-				read(A),start_menu.
+				read(_),start_menu.
 
-menu_option(A):- start_menu.
+menu_option(_):- start_menu.
 
 
 start_menu:-write('///////////////////////\n'),

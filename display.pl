@@ -27,7 +27,8 @@ printRow([]):- write('|\n').
 printRow([TRIANGLE | NEXT_TRIANGLES]) :-    printTriangle(TRIANGLE),
 										    printRow(NEXT_TRIANGLES).			
 
-% Print the board
+
+% Print board
 printBoard(N, [ROW|[]]) :-	printBoarder([_|ROW]),
 							printIndexRow(N),
 							printRow(ROW),

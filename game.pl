@@ -1,7 +1,7 @@
 :- include('display.pl').
 :- include('input.pl').
 :- include('validation.pl').
-
+%:- include('utilities.pl').
 
 % Create the board
 createBoard(BOARD, COLUMNS, ROWS):- 
@@ -22,6 +22,7 @@ createColumn([X|Y],COLS):-
 							createColumn(X,0),
 							N is COLS-1,
 							createColumn(Y, N).
+
 
 % Start the game  
 start:- start(10, 10).
