@@ -44,16 +44,61 @@ printBoarder([_| NEXT_COLUMNS]):-   write('----'),
 
 % Print Row
 printRow([]):- write('|\n').
-printRow([TRIANGLE | NEXT_TRIANGLES]) :-    printTriangle(TRIANGLE),
-										    printRow(NEXT_TRIANGLES).
+printRow([TRIANGLE | NEXT_TRIANGLES]):-	printTriangle(TRIANGLE),
+										printRow(NEXT_TRIANGLES).
 
 % Print the board
-printBoard([ROW|[]]) :-	printBoarder(ROW),
-						printRow(ROW),
-						printBoarder(ROW). % Last row
-printBoard([ROW | NEXT_ROWS]) :-    printBoarder(ROW),
+printBoard(N, [ROW|[]]) :-	printBoarder([_|ROW]),
+							printIndexRow(N),
+							printRow(ROW),
+							printBoarder([_|ROW]). % Last row
+printBoard(N,[ROW | NEXT_ROWS]) :-  printBoarder([_|ROW]),
+									printIndexRow(N),
 								    printRow(ROW),
-								    printBoard(NEXT_ROWS).
+								    NEXT is N+1,
+								    printBoard(NEXT, NEXT_ROWS).
+
+%Print index
+printBoardIndex([ROW | NEXT_ROWS]):-write('    '),
+									printBoarder(ROW),
+									write('    '),
+									printIndexCol(0, ROW),		
+									printBoarder([_|ROW]),
+							    	printIndexRow(0),
+							    	printRow(ROW),
+							    	printBoard(1,NEXT_ROWS).
+
+printIndexCol(_,[]):- write('|\n').
+printIndexCol(N, [_|NEXT_COLUMNS]):-N<10,		
+									write('| '),
+									CHAR is N+48,
+									name(C,[CHAR]),
+									write(C),
+									write(' '),
+									NEXT is N+1,
+									printIndexCol(NEXT, NEXT_COLUMNS). 
+
+printIndexCol(N, [_|NEXT_COLUMNS]):-write('| '),
+									CHAR is N+48+7,
+									name(C,[CHAR]),
+									write(C),
+									write(' '),
+									NEXT is N+1,
+									printIndexCol(NEXT, NEXT_COLUMNS).
+printIndexRow(N):-	N<10,
+					write('| '),
+					CHAR is N+48,
+					name(C,[CHAR]),
+					write(C),
+					write(' ').
+
+printIndexRow(N):-	write('| '),
+					CHAR is N+48+7,
+					name(C,[CHAR]),
+					write(C),
+					write(' ').
+
+
 
 % Start the game  
 start(COLS, ROWS) :-    createBoard(BOARD, COLS, ROWS),
@@ -67,7 +112,7 @@ menu_option(1):-	write('Number of columns: '),
 					write('\nNumber of rows: '),
 					read(ROWS),
 					createBoard(BOARD, COLUMNS,ROWS),
-					printBoard(BOARD).
+					printBoardIndex(BOARD).
 
 
 menu_option(2):- 	write('/////////////\n'),
@@ -76,6 +121,9 @@ menu_option(2):- 	write('/////////////\n'),
 					write('Players alternate playing adjacent to the existing pattern.\nThe first player to form a four tile triangle with his color on all three tips (and either color in the center) wins.\n'),
 					write('\nInsert key any to go back\n'),	
 					read(A),start_game(A).
+
+menu_option(A):- start_game(A).
+
 
 start_game(_) :- 	write('///////////////////////\n'),
 					write('//      Spangles     //\n'),
