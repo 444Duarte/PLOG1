@@ -1,28 +1,30 @@
-% Has triangle on that coordinate (@type 1 or 2 depending on triangle orientation)
-hasTriangle([TYPE | PLAYER], TYPE) :- PLAYER \= 0.
+% Get a triangle in a column. 1. row, 2. column number, 3. type, 4. player
+getTriangleCol([[TYPE | PLAYER] | _], 0, TYPE, PLAYER).
+getTriangleCol([_ | NCOLS], COLUMN, TYPE, PLAYER) :-    COLUMN \= 0,
+                                                        C1 is COLUMN - 1,
+                                                        getTriangleCol(NCOLS, C1, TYPE, PLAYER).
+% Get a triangle in a board. 1. board, 2. column number, 3. row number, 4. type, 5. player      
+getTriangle([ROW | _], COLUMN, 0, TYPE, PLAYER) :- getTriangleCol(ROW, COLUMN, TYPE, PLAYER).
+getTriangle([_ | NROWS], COLUMN, ROW, TYPE, PLAYER) :-  ROW \= 0,
+                                                        R1 is ROW - 1,
+                                                        getTriangle(NROWS, COLUMN, R1, TYPE, PLAYER).
 
-% Triangle on top
-validColumn([COLUMN | _], 0, 1) :- hasTriangle(COLUMN, 1).
-validColumn([_ | NEXT_COLUMNS], COLUMN, 1) :- 	COLUMN \= 0,
-                                                C is COLUMN-1,
-												validColumn(NEXT_COLUMNS, C, 1).
-
-% Triangle on left
-validColumn([COLUMN | _], 1, 0) :- hasTriangle(COLUMN, _).
-
-% Triangle on right
-validColumn([COLUMN | _], -1, 0) :- hasTriangle(COLUMN, _).
-validColumn([_ | NEXT_COLUMNS], COLUMN, 0) :-   C is COLUMN-1,
-												validColumn(NEXT_COLUMNS, C, 0).
-
-% Triangle on bottom
-validColumn([COLUMN | _], 0, -1) :- hasTriangle(COLUMN, 2).
-validColumn([_ | NEXT_COLUMNS], COLUMN, -1) :- 	COLUMN \= 0,
-                                                C is COLUMN-1,
-												validColumn(NEXT_COLUMNS, C, -1).
 % Valid coordinates
-validCoords([ROW | _], COLUMN, 1) :- 	validColumn(ROW, COLUMN, 1).
-validCoords([ROW | _], COLUMN, 0) :- 	validColumn(ROW, COLUMN, 0).
-validCoords([ROW | _], COLUMN, -1) :- 	validColumn(ROW, COLUMN, -1).
-validCoords([_ | NEXT_ROWS], COLUMN, ROW) :- 	R is ROW - 1,
-												validCoords(NEXT_ROWS, COLUMN, R).
+% Triangle on the right
+validCoords(BOARD, COLUMN, ROW) :-  C1 is COLUMN + 1,
+                                    getTriangle(BOARD, C1, ROW, _, PLAYER),
+                                    PLAYER \= 0.
+% Triangle on the left
+validCoords(BOARD, COLUMN, ROW) :-  C1 is COLUMN - 1,
+                                    getTriangle(BOARD, C1, ROW, _, PLAYER),
+                                    PLAYER \= 0.
+% Triangle on the top
+validCoords(BOARD, COLUMN, ROW) :-  R1 is ROW - 1,
+                                    getTriangle(BOARD, COLUMN, R1, TYPE, PLAYER),
+                                    TYPE == 1,
+                                    PLAYER \= 0.
+% Triangle on the bottom
+validCoords(BOARD, COLUMN, ROW) :-  R1 is ROW + 1,
+                                    getTriangle(BOARD, COLUMN, R1, TYPE, PLAYER),
+                                    TYPE == 2,
+                                    PLAYER \= 0.
