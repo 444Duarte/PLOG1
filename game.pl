@@ -1,6 +1,7 @@
 :- include('display.pl').
 :- include('input.pl').
 :- include('validation.pl').
+%:- include('utilities.pl').
 
 % Create the board
 createBoard(BOARD, COLUMNS, ROWS):- 
@@ -21,7 +22,8 @@ createColumn([X|Y],COLS):-
 							createColumn(X,0),
 							N is COLS-1,
 							createColumn(Y, N).
-	
+
+
 % Start the game  
 start:- start(10, 10).
 start(COLS, ROWS) :-    createBoard(BOARD, COLS, ROWS),
@@ -33,7 +35,7 @@ nextPlayer(2, 1).
 
 % Game loop
 playGame(BOARD, PLAYER) :-  !,
-                            printBoard(BOARD),
+                            printBoardIndex(BOARD),
                             printPlayer(PLAYER),
                             readCoord(X,Y),
                             validCoords(BOARD,X,Y),
