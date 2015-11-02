@@ -80,19 +80,19 @@ test(BOARD, fail) :-    setup(BOARD),
 
 % Validation calculating triangle type
 :- begin_tests(triangleType).
-test(BOARD, [true(TYPE == 2)]) :-   setup(BOARD),
+test(BOARD, true(TYPE == 2)) :-   setup(BOARD),
                                     calcTriangleType(BOARD, 0, 1, TYPE).
-test(BOARD, [true(TYPE == 2)]) :-   setup(BOARD),
+test(BOARD, true(TYPE == 2)) :-   setup(BOARD),
                                     calcTriangleType(BOARD, 1, 2, TYPE).
-test(BOARD, [true(TYPE == 1)]) :-   setup(BOARD),
+test(BOARD, true(TYPE == 1)) :-   setup(BOARD),
                                     calcTriangleType(BOARD, 1, 1, TYPE).
 :- end_tests(triangleType).
 
 % Validation number empty cells
 :- begin_tests(emptyCells).
-test(BOARD, [true(N == 24)]) :- setup(BOARD),
+test(BOARD, true(N == 24)) :- setup(BOARD),
                                 numberEmptyCells(BOARD, N).
-test(BOARD, [true(N == 23)]) :- setup(BOARD),
+test(BOARD, true(N == 23)) :- setup(BOARD),
                                 insertTriangle(0, 0, BOARD, RESULT, [1|1]),
                                 numberEmptyCells(RESULT, N).
 test(BOARD, true) :-    setup(BOARD),

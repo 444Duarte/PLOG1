@@ -11,11 +11,6 @@ createRow([COLUMN | NEXT_COLUMNS], COLUMNS) :-  COLUMNS \= 0,
                                                 createRow(NEXT_COLUMNS, C1).
 createColumn([0|0]).
 
-% Start the game  
-start:- start(10, 10).
-start(COLS, ROWS) :-    createBoard(BOARD, COLS, ROWS),
-                        playGame(BOARD, 1).
-
 % Get a triangle in a column. 1. row, 2. column number, 3. value [type | player]
 getTriangleCol([VALUE | _], 0, VALUE).
 getTriangleCol([_ | NCOLS], COLUMN, VALUE) :-    COLUMN \= 0,
