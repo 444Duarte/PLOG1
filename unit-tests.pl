@@ -23,7 +23,7 @@ setup(BOARD):- createBoard(BOARD).
 
 :- begin_tests(validation).
 % Validation of movement
-test(BOARD, true) :-    setup(BOARD),
+test(BOARD, fail) :-    setup(BOARD),
                         validCoords(BOARD, 1, 0).
 
 test(BOARD, true) :-    setup(BOARD),
