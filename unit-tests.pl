@@ -1,5 +1,6 @@
 :- use_module(library(plunit)).
 :- include('validation.pl').
+:- include('utilities.pl').
 
 createBoard(
 [
@@ -19,10 +20,12 @@ test(BOARD, true) :-    setup(BOARD),
                         getTriangle(BOARD, 1, 1, TYPE, PLAYER),
                         TYPE == 1,
                         PLAYER == 2.
+
 test(BOARD, true) :-    setup(BOARD),
                         getTriangle(BOARD, 4, 4, TYPE, PLAYER),
                         TYPE == 0,
                         PLAYER == 0.
+
 test(BOARD, fail) :-    setup(BOARD),
                         getTriangle(BOARD, 0, 1, TYPE, PLAYER),
                         TYPE == 1,
@@ -45,6 +48,13 @@ test(BOARD, true) :-    setup(BOARD),
 
 test(BOARD, fail) :-    setup(BOARD),
                         validCoords(BOARD, 1, 1).
+
+test(BOARD, fail) :-    setup(BOARD),
+                        validCoords(BOARD, -1, 2).
+
+test(BOARD, fail) :-    setup(BOARD),
+                        validCoords(BOARD, 6, 7).
+
 :- end_tests(validCoord).
 
 % Validation of insertion
@@ -54,4 +64,25 @@ test(BOARD, true) :-    setup(BOARD),
                         getTriangle(RESULT, 1, 2, TYPE, PLAYER),
                         TYPE == 2,
                         PLAYER == 1. 
+
+test(BOARD, true) :-    setup(BOARD),
+                        insertTriangle(4, 4, BOARD, RESULT, [1|1]),
+                        getTriangle(RESULT, 4, 4, TYPE, PLAYER),
+                        TYPE == 1,
+                        PLAYER == 1.
+
+test(BOARD, fail) :-    setup(BOARD),
+                        insertTriangle(5, 4, BOARD, RESULT, [1|1]),
+                        getTriangle(RESULT, 5, 4, TYPE, PLAYER),
+                        TYPE == 1,
+                        PLAYER == 1.
 :- end_tests(insertion).
+
+% Validation number empty cells
+:- begin_tests(emptyCells).
+test(BOARD, [true(N == 24)]) :-    setup(BOARD),
+                        numberEmptyCells(BOARD, N).
+test(BOARD, [true(N == 23)]) :-    setup(BOARD),
+                        insertTriangle(0, 0, BOARD, RESULT, [1|1]),
+                        numberEmptyCells(RESULT, N).
+:- end_tests(emptyCells).
