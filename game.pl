@@ -28,7 +28,6 @@ createColumn([X|Y],COLS):-
 start:- start(10, 10).
 start(COLS, ROWS) :-    createBoard(BOARD, COLS, ROWS),
                         playGame(BOARD, 1).
-
 % Next player (current player - next player)
 nextPlayer(1, 2).
 nextPlayer(2, 1).
@@ -38,9 +37,11 @@ playGame(BOARD, PLAYER) :-  !,
                             printBoardIndex(BOARD),
                             printPlayer(PLAYER),
                             readCoord(X,Y),
-                            validCoords(BOARD,X,Y),
-                            nextPlayer(PLAYER, NEXT_PLAYER),
-                            playGame(BOARD, NEXT_PLAYER).
-playGame(BOARD, PLAYER) :-  write('Invalid position! Press any key to try again....'), nl,
-                            readAnyKey,
-                            playGame(BOARD, PLAYER).
+                            (validCoords(BOARD,X,Y) == true ->
+                                    insertTriangle(X, Y, BOARD, NEW_BOARD, [1|PLAYER]),
+                                    nextPlayer(PLAYER, NEXT_PLAYER),
+                                    playGame(NEW_BOARD, NEXT_PLAYER);
+
+                                    write('Invalid position! Press any key to try again...'), nl,
+                                    readAnyKey,
+                                    playGame(BOARD, PLAYER)).
