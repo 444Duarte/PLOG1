@@ -28,10 +28,11 @@ printRow([TRIANGLE | NEXT_TRIANGLES]) :-    printTriangle(TRIANGLE),
 										    printRow(NEXT_TRIANGLES).
 
 % Print Board
-printBoard([ROW|[]]) :-	printBoarder(ROW),
-						printRow(ROW),
-						printBoarder(ROW). % Last row
-printBoard([ROW | NEXT_ROWS]) :-    printBoarder(ROW),
+printBoard([ROW | []]) :-   printBoarder(ROW),
+                            printRow(ROW),
+                            printBoarder(ROW).
+printBoard([ROW | NEXT_ROWS]) :-    NEXT_ROWS \= [],
+                                    printBoarder(ROW),
 								    printRow(ROW),
 								    printBoard(NEXT_ROWS).
 
