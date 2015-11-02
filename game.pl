@@ -1,7 +1,7 @@
 :- include('display.pl').
 :- include('input.pl').
 :- include('validation.pl').
-%:- include('utilities.pl').
+:- include('utilities.pl').
 
 % Create the board
 createBoard(BOARD, COLUMNS, ROWS):- 
