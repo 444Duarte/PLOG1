@@ -1,5 +1,7 @@
+:- include('unit-tests.pl').
 :- include('display.pl').
 :- include('input.pl').
+:- include('validation.pl').
 
 % Create the board
 createBoard(BOARD, COLUMNS, ROWS):- 
