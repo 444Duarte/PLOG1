@@ -82,5 +82,13 @@ printIndexRow(N):-	write('| '),
 % Print player
 printPlayer(PLAYER) :-  write('Player '),
                         write(PLAYER),
-                        write(':\n').
+                        write(':'), nl.
 
+% Print Winner
+printWinner(PLAYER) :-  write('Player '),
+                        write(PLAYER),
+                        write(' won the game!'), nl.
+printDraw :-  write('There is no more available cells to be played! This is a draw!'), nl.
+
+% Invalid
+printInvalidCoord :- write('Invalid position! Press any key to retry...'), nl.

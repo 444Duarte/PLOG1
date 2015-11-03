@@ -76,3 +76,13 @@ numberEmptyCells([ROW | NROW], N) :-    numberEmptyCols(ROW, N1),
                                         N is N1 + N2.
 hasAvailableCells(BOARD) :- numberEmptyCells(BOARD, N),
                             N \= 0.
+
+% Board dimensions
+numberCols([], 0).
+numberCols([_ | NEXT_COLS], N) :-   numberCols(NEXT_COLS, N1),
+                                    N is N1 + 1.
+getNumberCols([ROW | _], N) :- numberCols(ROW, N). 
+
+getNumberRows([], 0).
+getNumberRows([_ | NEXT_ROWS], N) :-    getNumberRows(NEXT_ROWS, N1),
+                                        N is N1 + 1. 

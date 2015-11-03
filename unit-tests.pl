@@ -129,7 +129,7 @@ test(BOARD, fail) :-    setup(BOARD),
 % Validation check winner
 :- begin_tests(winner).
 test(BOARD, fail) :-    setup(BOARD),
-                        isWinner(BOARD, 1, 1, 1).
+                        checkWinner(BOARD, _).
 %  ▲ 
 % ▲▽▲ 
 test(BOARD, true) :-    setup(BOARD),
