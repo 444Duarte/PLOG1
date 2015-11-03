@@ -17,6 +17,7 @@ start(COLS, ROWS) :-    createBoard(BOARD, COLS, ROWS),
                         playGame(BOARD, 1).
 
 % Get a triangle in a column. 1. row, 2. column number, 3. value [type | player]
+
 getTriangleCol([VALUE | _], 0, VALUE).
 getTriangleCol([_ | NCOLS], COLUMN, VALUE) :-    COLUMN \= 0,
                                                         C1 is COLUMN - 1,
