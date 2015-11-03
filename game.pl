@@ -33,7 +33,7 @@ nextPlayer(1, 2).
 nextPlayer(2, 1).
 
 % Game loop
-playGame(BOARD) :-  printBoard(BOARD),
+playGame(BOARD) :-  printBoardIndex(BOARD),
                     printPlayer(1),
                     readCoord(X, Y),
                     insertTriangle(X, Y, BOARD, NEW_BOARD, [1|1]),

@@ -125,3 +125,62 @@ test(BOARD, fail) :-    setup(BOARD),
                         insertTriangle(4, 4, BOARD24, BOARD25, [1|1]),
                         hasAvailableCells(BOARD25).
 :- end_tests(emptyCells).
+
+% Validation check winner
+:- begin_tests(winner).
+test(BOARD, fail) :-    setup(BOARD),
+                        isWinner(BOARD, 1, 1, 1).
+%  ▲ 
+% ▲▽▲ 
+test(BOARD, true) :-    setup(BOARD),
+                        insertTriangle(1, 1, BOARD, BOARD1, [1|2]),
+                        insertTriangle(2, 1, BOARD1, BOARD2, [2|1]),
+                        insertTriangle(3, 1, BOARD2, BOARD3, [1|2]),
+                        insertTriangle(2, 0, BOARD3, BOARD4, [1|2]),
+                        isWinner(BOARD4, 2, 1, 1),
+                        isWinner(BOARD4, 2, 3, 1),
+                        isWinner(BOARD4, 2, 2, 0).
+%  ▲ 
+% ▲▼▲ 
+test(BOARD, true) :-    setup(BOARD),
+                        insertTriangle(1, 1, BOARD, BOARD1, [1|2]),
+                        insertTriangle(2, 1, BOARD1, BOARD2, [2|2]),
+                        insertTriangle(3, 1, BOARD2, BOARD3, [1|2]),
+                        insertTriangle(2, 0, BOARD3, BOARD4, [1|2]),
+                        isWinner(BOARD4, 2, 1, 1),
+                        isWinner(BOARD4, 2, 2, 1),
+                        isWinner(BOARD4, 2, 3, 1),
+                        isWinner(BOARD4, 2, 2, 0).
+% ▼△▼
+%  ▼
+test(BOARD, true) :-    setup(BOARD),
+                        insertTriangle(1, 1, BOARD, BOARD1, [2|2]),
+                        insertTriangle(2, 1, BOARD1, BOARD2, [1|1]),
+                        insertTriangle(3, 1, BOARD2, BOARD3, [2|2]),
+                        insertTriangle(2, 2, BOARD3, BOARD4, [2|2]),
+                        isWinner(BOARD4, 2, 1, 1),
+                        isWinner(BOARD4, 2, 3, 1),
+                        isWinner(BOARD4, 2, 2, 2).
+% ▼▲▼ 
+%  ▼
+test(BOARD, true) :-    setup(BOARD),
+                        insertTriangle(1, 1, BOARD, BOARD1, [2|2]),
+                        insertTriangle(2, 1, BOARD1, BOARD2, [1|2]),
+                        insertTriangle(3, 1, BOARD2, BOARD3, [2|2]),
+                        insertTriangle(2, 2, BOARD3, BOARD4, [2|2]),
+                        isWinner(BOARD4, 2, 1, 1),
+                        isWinner(BOARD4, 2, 2, 1),
+                        isWinner(BOARD4, 2, 3, 1),
+                        isWinner(BOARD4, 2, 2, 2).
+% ▽▲▼ 
+%  ▼
+test(BOARD, fail) :-    setup(BOARD),
+                        insertTriangle(1, 1, BOARD, BOARD1, [2|1]),
+                        insertTriangle(2, 1, BOARD1, BOARD2, [1|2]),
+                        insertTriangle(3, 1, BOARD2, BOARD3, [2|2]),
+                        insertTriangle(2, 2, BOARD3, BOARD4, [2|2]),
+                        isWinner(BOARD4, 2, 1, 1),
+                        isWinner(BOARD4, 2, 2, 1),
+                        isWinner(BOARD4, 2, 3, 1),
+                        isWinner(BOARD4, 2, 2, 2).
+:- end_tests(winner).
