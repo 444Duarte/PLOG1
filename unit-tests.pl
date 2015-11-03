@@ -137,9 +137,8 @@ test(BOARD, true) :-    setup(BOARD),
                         insertTriangle(2, 1, BOARD1, BOARD2, [2|1]),
                         insertTriangle(3, 1, BOARD2, BOARD3, [1|2]),
                         insertTriangle(2, 0, BOARD3, BOARD4, [1|2]),
-                        isWinner(BOARD4, 2, 1, 1),
-                        isWinner(BOARD4, 2, 3, 1),
-                        isWinner(BOARD4, 2, 2, 0).
+                        checkWinner(BOARD4, PLAYER),
+                        PLAYER == 2.
 %  ▲ 
 % ▲▼▲ 
 test(BOARD, true) :-    setup(BOARD),
@@ -147,10 +146,8 @@ test(BOARD, true) :-    setup(BOARD),
                         insertTriangle(2, 1, BOARD1, BOARD2, [2|2]),
                         insertTriangle(3, 1, BOARD2, BOARD3, [1|2]),
                         insertTriangle(2, 0, BOARD3, BOARD4, [1|2]),
-                        isWinner(BOARD4, 2, 1, 1),
-                        isWinner(BOARD4, 2, 2, 1),
-                        isWinner(BOARD4, 2, 3, 1),
-                        isWinner(BOARD4, 2, 2, 0).
+                        checkWinner(BOARD4, PLAYER),
+                        PLAYER == 2.
 % ▼△▼
 %  ▼
 test(BOARD, true) :-    setup(BOARD),
@@ -158,9 +155,8 @@ test(BOARD, true) :-    setup(BOARD),
                         insertTriangle(2, 1, BOARD1, BOARD2, [1|1]),
                         insertTriangle(3, 1, BOARD2, BOARD3, [2|2]),
                         insertTriangle(2, 2, BOARD3, BOARD4, [2|2]),
-                        isWinner(BOARD4, 2, 1, 1),
-                        isWinner(BOARD4, 2, 3, 1),
-                        isWinner(BOARD4, 2, 2, 2).
+                        checkWinner(BOARD4, PLAYER),
+                        PLAYER == 2.
 % ▼▲▼ 
 %  ▼
 test(BOARD, true) :-    setup(BOARD),
@@ -168,10 +164,8 @@ test(BOARD, true) :-    setup(BOARD),
                         insertTriangle(2, 1, BOARD1, BOARD2, [1|2]),
                         insertTriangle(3, 1, BOARD2, BOARD3, [2|2]),
                         insertTriangle(2, 2, BOARD3, BOARD4, [2|2]),
-                        isWinner(BOARD4, 2, 1, 1),
-                        isWinner(BOARD4, 2, 2, 1),
-                        isWinner(BOARD4, 2, 3, 1),
-                        isWinner(BOARD4, 2, 2, 2).
+                        checkWinner(BOARD4, PLAYER),
+                        PLAYER == 2.
 % ▽▲▼ 
 %  ▼
 test(BOARD, fail) :-    setup(BOARD),
@@ -179,8 +173,6 @@ test(BOARD, fail) :-    setup(BOARD),
                         insertTriangle(2, 1, BOARD1, BOARD2, [1|2]),
                         insertTriangle(3, 1, BOARD2, BOARD3, [2|2]),
                         insertTriangle(2, 2, BOARD3, BOARD4, [2|2]),
-                        isWinner(BOARD4, 2, 1, 1),
-                        isWinner(BOARD4, 2, 2, 1),
-                        isWinner(BOARD4, 2, 3, 1),
-                        isWinner(BOARD4, 2, 2, 2).
+                        checkWinner(BOARD4, PLAYER),
+                        PLAYER == 2.
 :- end_tests(winner).
