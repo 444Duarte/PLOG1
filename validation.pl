@@ -1,4 +1,9 @@
 % Triangle on the right
+validCoords(BOARD, COLUMN, ROW) :-  getTriangle(BOARD, COLUMN, ROW, [_ | PLAYER]),
+                                    PLAYER \= 0,
+                                    !,
+                                    fail.
+
 validCoords(BOARD, COLUMN, ROW) :-  C1 is COLUMN + 1,
                                     getTriangle(BOARD, C1, ROW, [_ | PLAYER]),
                                     PLAYER \= 0.
