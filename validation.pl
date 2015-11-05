@@ -26,7 +26,8 @@ validCoords(BOARD, COLUMN, ROW) :-  R1 is ROW + 1,
 checkWinner(BOARD,PLAYER):- checkWinnerRow(BOARD, 0, BOARD, PLAYER).
 
 checkWinnerRow(_, _, [], _):- false.
-checkWinnerRow(BOARD, ROW, [CURR_ROW|NEXT_ROW], PLAYER):-   ((R is ROW+1, checkWinnerRow(BOARD, R, NEXT_ROW, PLAYER)) ;
+checkWinnerRow(BOARD, ROW, [CURR_ROW|NEXT_ROW], PLAYER):-   NEXT_ROW \= [],
+                                                            ((R is ROW+1, checkWinnerRow(BOARD, R, NEXT_ROW, PLAYER)) ;
                                                              startCheckWinnerCol(BOARD, ROW, CURR_ROW, PLAYER)).
 
 
@@ -36,22 +37,24 @@ startCheckWinnerCol(BOARD, ROW , [FIRST_ROW|SECOND_ROW], PLAYER):- checkWinnerCo
 %
 checkWinnerCol(_, _, _, _, [_|[]], _):- false.
 
-checkWinnerCol(BOARD, COL, ROW, _, [CURR_CELL|NEXT_CELL], PLAYER):-     C is COL+1,
+checkWinnerCol(BOARD, COL, ROW, _, [CURR_CELL|NEXT_CELL], PLAYER):-     NEXT_CELL \= [],
+                                                                        C is COL+1,
                                                                         checkWinnerCol(BOARD, C, ROW, CURR_CELL, NEXT_CELL, PLAYER).
-checkWinnerCol(BOARD, COL, ROW, PREVIOUS_CELL, [_|NEXT_CELL], PLAYER):- checkWinnerCell(BOARD, COL, ROW, PREVIOUS_CELL, NEXT_CELL, PLAYER).
+checkWinnerCol(BOARD, COL, ROW, PREVIOUS_CELL, [_|NEXT_CELL], PLAYER):- NEXT_CELL \= [],
+                                                                        checkWinnerCell(BOARD, COL, ROW, PREVIOUS_CELL, NEXT_CELL, PLAYER).
 
-checkWinnerCell(BOARD,COL, ROW, [_|PLAYER_LEFT], [[_|PLAYER_RIGHT]|_], PLAYER):-  PLAYER_LEFT =\= 0,
-                                                                              PLAYER_LEFT == PLAYER_RIGHT,
-                                                                              R is ROW+1,
-                                                                              getTriangle(BOARD, COL, R, [TYPE|PLAYER]),
-                                                                              [TYPE|PLAYER] \= [],
-                                                                              PLAYER == PLAYER_LEFT,
-                                                                              TYPE == 2.
+checkWinnerCell(BOARD,COL, ROW, [_|PLAYER_LEFT], [[_|PLAYER_RIGHT]|_], PLAYER):-    PLAYER_LEFT =\= 0,
+                                                                                    PLAYER_LEFT == PLAYER_RIGHT,
+                                                                                    R is ROW+1,
+                                                                                    getTriangle(BOARD, COL, R, [TYPE|PLAYER]),
+                                                                                    [TYPE|PLAYER] \= [],
+                                                                                    PLAYER == PLAYER_LEFT,
+                                                                                    TYPE == 2.
 
-checkWinnerCell(BOARD,COL, ROW, [_|PLAYER_LEFT], [[_|PLAYER_RIGHT]|_], PLAYER):-  ROW > 0,
-                                                                              PLAYER_LEFT =\= 0,
-                                                                              PLAYER_LEFT =:= PLAYER_RIGHT,
-                                                                              R is ROW-1,
-                                                                              getTriangle(BOARD, COL, R, [TYPE|PLAYER]),
-                                                                              PLAYER =:= PLAYER_LEFT,
-                                                                              TYPE =:= 1.
+checkWinnerCell(BOARD,COL, ROW, [_|PLAYER_LEFT], [[_|PLAYER_RIGHT]|_], PLAYER):-ROW > 0,
+                                                                                PLAYER_LEFT =\= 0,
+                                                                                PLAYER_LEFT =:= PLAYER_RIGHT,
+                                                                                R is ROW-1,
+                                                                                getTriangle(BOARD, COL, R, [TYPE|PLAYER]),
+                                                                                PLAYER =:= PLAYER_LEFT,
+                                                                                TYPE =:= 1.
