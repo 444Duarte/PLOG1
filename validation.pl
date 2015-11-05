@@ -34,8 +34,7 @@ checkWinnerRow(BOARD, ROW, [CURR_ROW|NEXT_ROW], PLAYER):-   NEXT_ROW \= [],
 startCheckWinnerCol(BOARD, ROW , [FIRST_ROW|SECOND_ROW], PLAYER):- checkWinnerCol(BOARD, 1, ROW, FIRST_ROW, SECOND_ROW, PLAYER).
 
 
-%
-checkWinnerCol(_, _, _, _, [_|[]], _):- false.
+checkWinnerCol(_, _, _, _, [_|[]], _):- fail.
 
 checkWinnerCol(BOARD, COL, ROW, _, [CURR_CELL|NEXT_CELL], PLAYER):-     NEXT_CELL \= [],
                                                                         C is COL+1,
