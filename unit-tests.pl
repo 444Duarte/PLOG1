@@ -1,16 +1,25 @@
 :- use_module(library(plunit)).
 :- include('validation.pl').
 :- include('utilities.pl').
+:- include('bot.pl').
+:- include('display.pl').
 
 createBoard(
 [
 [ [0|0], [0|0], [0|0], [0|0], [0|0] ],
 [ [0|0], [1|2], [0|0], [0|0], [0|0] ],
-[ [0|0], [0|0], [0|0], [0|0], [0|0] ],
+[ [1|2], [2|1], [0|0], [0|0], [0|0] ],
 [ [0|0], [0|0], [0|0], [0|0], [0|0] ],
 [ [0|0], [0|0], [0|0], [0|0], [0|0] ]
 ]
 ).
+
+
+
+testBot:- createBoard(BOARD),
+          printBoardIndex(BOARD),    
+          botTurn(BOARD, RESULT, 2, 1),
+          printBoardIndex(RESULT).  
 
 setup(BOARD):- createBoard(BOARD).
 
@@ -77,6 +86,8 @@ test(BOARD, fail) :-    setup(BOARD),
                         TYPE == 1,
                         PLAYER == 1.
 :- end_tests(insertion).
+
+
 
 % Validation calculating triangle type
 :- begin_tests(triangleType).
