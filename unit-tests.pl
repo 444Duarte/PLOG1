@@ -18,7 +18,7 @@ createBoard(
 
 testBot:- createBoard(BOARD),
           printBoardIndex(BOARD),    
-          botTurn(BOARD, RESULT, 2, 1),
+          botTurn(BOARD, RESULT, 2, 2),
           printBoardIndex(RESULT).  
 
 setup(BOARD):- createBoard(BOARD).
