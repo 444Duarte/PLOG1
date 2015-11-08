@@ -40,7 +40,7 @@ possibleFinishCell(BOARD, PLAYER, X, Y, COL, ROW):- COL1 is COL-1,
                                                     PL_RIGHT == PLAYER,
                                                     ((TP_LEFT == 2, ROWN is ROW+1, getTriangle(BOARD, COL, ROW+1, VALUE), VALUE == [0|0], X is COL, Y is ROW+1) 
                                                     ;(TP_RIGHT == 1,ROWN is ROW-1, getTriangle(BOARD, COL, ROWN, VALUE), VALUE == [0|0], X is COL, Y is ROW-1)
-                                                    ;false
+                                                    ;fail
                                                     ).
 
 
@@ -49,7 +49,7 @@ possibleFinishCell(BOARD, PLAYER, X, Y, COL, ROW):- COL1 is COL-1,
                                                     PL_LEFT == PLAYER,
                                                     ((TP_LEFT == 2, (ROWN is ROW+1,getTriangle(BOARD, COL, ROWN, VALUE), VALUE == [TP_LEFT|PL_LEFT]))
                                                     ;(TP_LEFT == 1, (ROWN is ROW-1, getTriangle(BOARD, COL, ROWN, VALUE), VALUE == [TP_LEFT|PL_LEFT]))
-                                                    ;false
+                                                    ;fail
                                                     ),
                                                     COL2 is COL+1,
                                                     getTriangle(BOARD, COL2, ROW, VALUE),
@@ -62,7 +62,7 @@ possibleFinishCell(BOARD, PLAYER, X, Y, COL, ROW):- COL1 is COL+1,
                                                     PL_RIGHT == PLAYER,
                                                     ((TP_RIGHT == 2, (ROWN is ROW+1, getTriangle(BOARD, COL, ROWN, VALUE),VALUE == [TP_RIGHT|PL_RIGHT]))
                                                     ;(TP_RIGHT == 1, ROWN is ROW-1,getTriangle(BOARD, COL, ROWN, VALUE), VALUE == [TP_RIGHT|PL_RIGHT])
-                                                    ;false
+                                                    ;fail
                                                     ),
                                                     COL2 is COL-1,
                                                     getTriangle(BOARD, COL2, ROW, VALUE),
