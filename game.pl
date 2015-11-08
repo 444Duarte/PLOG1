@@ -11,10 +11,10 @@
 % Start the game  
 startPvP(COLS, ROWS) :-     createBoard(BOARD, COLS, ROWS),
                             initialPlayPvP(BOARD).
-startPvB(COLS, ROWS) :-     createBoard(BOARD, COLS, ROWS),
-                            initialPlayPvB(BOARD).
-startBvB(COLS, ROWS) :-     createBoard(BOARD, COLS, ROWS),
-                            initialPlayBvB(BOARD).
+startPvB(COLS, ROWS, DIFFICULTY) :- createBoard(BOARD, COLS, ROWS),
+                                    initialPlayPvB(BOARD, DIFFICULTY).
+startBvB(COLS, ROWS, DIFFICULTY) :- createBoard(BOARD, COLS, ROWS),
+                                    initialPlayBvB(BOARD, DIFFICULTY).
 
 % Next player (current player - next player)
 nextPlayer(1, 2).

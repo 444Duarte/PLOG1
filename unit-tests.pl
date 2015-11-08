@@ -52,7 +52,7 @@ test(BOARD, true) :-    setup(BOARD),
 test(BOARD, true) :-    setup(BOARD),
                         validCoords(BOARD, 2, 1).
 
-test(BOARD, true) :-    setup(BOARD),
+test(BOARD, fail) :-    setup(BOARD),
                         validCoords(BOARD, 1, 2).
 
 test(BOARD, fail) :-    setup(BOARD),
@@ -101,9 +101,9 @@ test(BOARD, true(TYPE == 1)) :-   setup(BOARD),
 
 % Validation number empty cells
 :- begin_tests(emptyCells).
-test(BOARD, true(N == 24)) :- setup(BOARD),
+test(BOARD, true(N == 22)) :- setup(BOARD),
                                 numberEmptyCells(BOARD, N).
-test(BOARD, true(N == 23)) :- setup(BOARD),
+test(BOARD, true(N == 21)) :- setup(BOARD),
                                 insertTriangle(0, 0, BOARD, RESULT, [1|1]),
                                 numberEmptyCells(RESULT, N).
 test(BOARD, true) :-    setup(BOARD),
