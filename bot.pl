@@ -23,15 +23,15 @@ findFinishRow(BOARD, PLAYER, NCOLS, NROWS, X, Y, 0):- findFinishRow(BOARD, PLAYE
 findFinishRow(BOARD, PLAYER, NCOLS,NROWS, X, Y,ROW):-   ROW > 0,
                                                         ROW < NROWS,
                                                         ROWN is ROW+1,
-                                                        (findFinishRow(BOARD, PLAYER, NCOLS, NROWS, X,Y, ROWN) ; findFinishCols(BOARD, PLAYER, NCOLS, X, Y, 0 ,ROW)).
+                                                        (findFinishRow(BOARD, PLAYER, NCOLS, NROWS, X,Y, ROWN) ; findFinishCols(BOARD, PLAYER, NCOLS, X, Y, NCOLS,ROW)).
 
-findFinishCols(BOARD, PLAYER, NCOLS, X, Y, 0, ROW):- findFinishCols(BOARD, PLAYER, NCOLS, X, Y, 1, ROW).
+findFinishCols(BOARD, PLAYER, NCOLS, X, Y, NCOLS, ROW):-COL is NCOLS-1,
+														findFinishCols(BOARD, PLAYER, NCOLS, X, Y, COL, ROW).
 findFinishCols(BOARD, PLAYER, NCOLS, X, Y, COL, ROW):-  COL > 0,
 														COL < NCOLS,
                                                         getTriangle(BOARD, COL, ROW,VALUE),
-                                                        VALUE \= [0|0],
-                                                        possibleFinishCell(BOARD, PLAYER, X, Y, COL, ROW)
-														.
+                                                        ((COLN is COL-1 , findFinishCols(BOARD, PLAYER, NCOLS, X, Y, COLN, ROW)) 
+														; (VALUE \= [0|0], possibleFinishCell(BOARD, PLAYER, X, Y, COL, ROW)) ).
 
 
 possibleFinishCell(BOARD, PLAYER, X, Y, COL, ROW):- COL1 is COL-1,
@@ -94,7 +94,7 @@ botNegateEnemyMove(BOARD, RESULT, 1):-  getFinishCoord(BOARD, 2, X, Y),
 										botMakeMove(BOARD, RESULT, X, Y, 1).
 
 botNegateEnemyMove(BOARD, RESULT, 2):-  getFinishCoord(BOARD, 1, X, Y),
-                                botMakeMove(BOARD, RESULT, X, Y, 2).								
+										botMakeMove(BOARD, RESULT, X, Y, 2).								
 
 % Make a play as a bot 1.board, 2. Bot's player number, 3.dificulty
 botTurn(BOARD, RESULT, PLAYER, 1):- botRandomMove(BOARD, RESULT, PLAYER).
