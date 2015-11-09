@@ -1,5 +1,5 @@
 % Player vs Bot Game Loop
-initialPlayPvB(BOARD) :-   clearConsole,
+initialPlayPvB(BOARD, DIFFICULTY) :-   clearConsole,
                         printBoardIndex(BOARD),
                         PLAYER = 1,
                         printPlayer(PLAYER),
@@ -10,41 +10,39 @@ initialPlayPvB(BOARD) :-   clearConsole,
                         Y < NROWS, Y >= 0,
                         insertTriangle(X, Y, BOARD, NEW_BOARD, [1|1]),
                         nextPlayer(PLAYER, NEXT_PLAYER),
-                        playPvB(NEW_BOARD, NEXT_PLAYER).
+                        playPvB(NEW_BOARD, NEXT_PLAYER, DIFFICULTY).
 % Invalid coordinates
-initialPlayPvB(BOARD) :-   printInvalidCoord,
+initialPlayPvB(BOARD, DIFFICULTY) :-   printInvalidCoord,
                         readAnyKey,
                         !, 
-                        initialPlayPvB(BOARD).
+                        initialPlayPvB(BOARD, DIFFICULTY).
 
 % One player has won
-playPvB(BOARD, PLAYER) :-  nextPlayer(PLAYER, PREVIOUS_PLAYER),
+playPvB(BOARD, PLAYER, _) :-  nextPlayer(PLAYER, PREVIOUS_PLAYER),
                         checkWinner(BOARD, PREVIOUS_PLAYER),
                         clearConsole,
                         printBoardIndex(BOARD),
                         printWinner(PREVIOUS_PLAYER), !.
 % No one won yet, has playable cells
-playPvB(BOARD, PLAYER) :-  hasAvailableCells(BOARD),
+playPvB(BOARD, PLAYER, DIFFICULTY) :-  hasAvailableCells(BOARD),
                         clearConsole,
                         printBoardIndex(BOARD),
                         printPlayer(PLAYER),
-                        makeMovePvB(BOARD, NEW_BOARD, PLAYER),
+                        makeMovePvB(BOARD, NEW_BOARD, PLAYER, DIFFICULTY),
                         nextPlayer(PLAYER, NEXT_PLAYER),
                         !,
-                        playPvB(NEW_BOARD, NEXT_PLAYER).
+                        playPvB(NEW_BOARD, NEXT_PLAYER, DIFFICULTY).
 % Draw
-playPvB(_, _) :- printDraw. 
+playPvB(_, _, _) :- printDraw. 
 
 % Player make a move
-makeMovePvB(BOARD, RESULT, 2) :-   getRandomCoord(BOARD, X, Y),
-                                calcTriangleType(BOARD, X, Y, TYPE),
-                                insertTriangle(X, Y, BOARD, RESULT, [TYPE | 2]).
-makeMovePvB(BOARD, RESULT, 1) :-   readCoord(X, Y),
+makeMovePvB(BOARD, RESULT, 2, DIFFICULTY) :-   botTurn(BOARD, RESULT, 2, DIFFICULTY).
+makeMovePvB(BOARD, RESULT, 1, _) :-   readCoord(X, Y),
                                 validCoords(BOARD, X, Y),
                                 calcTriangleType(BOARD, X, Y, TYPE),
                                 insertTriangle(X, Y, BOARD, RESULT, [TYPE | 1]).
 % Invalid movement coordinates
-makeMovePvB(BOARD, _, PLAYER) :-   printInvalidCoord,
+makeMovePvB(BOARD, _, PLAYER, DIFFICULTY) :-   printInvalidCoord,
                                 readAnyKey,
                                 !,
-                                playPvB(BOARD, PLAYER).
+                                playPvB(BOARD, PLAYER, DIFFICULTY).

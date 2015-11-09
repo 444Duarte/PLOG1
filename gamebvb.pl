@@ -1,5 +1,5 @@
 % Bot vs Bot Game Loop
-initialPlayBvB(BOARD) :-   clearConsole,
+initialPlayBvB(BOARD, DIFFICULTY) :-   clearConsole,
                         printBoardIndex(BOARD),
                         PLAYER = 1,
                         printPlayer(PLAYER),
@@ -11,38 +11,36 @@ initialPlayBvB(BOARD) :-   clearConsole,
                         Y < NROWS, Y >= 0,
                         insertTriangle(X, Y, BOARD, NEW_BOARD, [1|1]),
                         nextPlayer(PLAYER, NEXT_PLAYER),
-                        playBvB(NEW_BOARD, NEXT_PLAYER).
+                        playBvB(NEW_BOARD, NEXT_PLAYER, DIFFICULTY).
 % Invalid coordinates
-initialPlayBvB(BOARD) :-   printInvalidCoord,
+initialPlayBvB(BOARD, DIFFICULTY) :-   printInvalidCoord,
                         readAnyKey,
                         !, 
-                        initialPlayBvB(BOARD).
+                        initialPlayBvB(BOARD, DIFFICULTY).
 
 % One player has won
-playBvB(BOARD, PLAYER) :-  nextPlayer(PLAYER, PREVIOUS_PLAYER),
+playBvB(BOARD, PLAYER, _) :-  nextPlayer(PLAYER, PREVIOUS_PLAYER),
                         checkWinner(BOARD, PREVIOUS_PLAYER),
                         clearConsole,
                         printBoardIndex(BOARD),
                         printWinner(PREVIOUS_PLAYER), !.
 % No one won yet, has playable cells
-playBvB(BOARD, PLAYER) :-  hasAvailableCells(BOARD),
+playBvB(BOARD, PLAYER, DIFFICULTY) :-  hasAvailableCells(BOARD),
                         clearConsole,
                         printBoardIndex(BOARD),
                         printPlayer(PLAYER),
-                        makeMoveBvB(BOARD, NEW_BOARD, PLAYER),
+                        makeMoveBvB(BOARD, NEW_BOARD, PLAYER, DIFFICULTY),
                         nextPlayer(PLAYER, NEXT_PLAYER),
                         !,
                         playBvB(NEW_BOARD, NEXT_PLAYER).
 % Draw
-playrBvB(_, _) :- printDraw. 
+playBvB(_, _, _) :- printDraw. 
 
 % Player make a move
-makeMoveBvB(BOARD, RESULT, PLAYER) :-   getRandomCoord(BOARD, X, Y),
-                                calcTriangleType(BOARD, X, Y, TYPE),
-                                insertTriangle(X, Y, BOARD, RESULT, [TYPE | PLAYER]).
+makeMoveBvB(BOARD, RESULT, PLAYER, DIFFICULTY) :-   botTurn(BOARD, RESULT, PLAYER, DIFFICULTY).
 
 % Invalid movement coordinates
-makeMoveBvB(BOARD, _, PLAYER) :-   printInvalidCoord,
+makeMoveBvB(BOARD, _, PLAYER, DIFFICULTY) :-   printInvalidCoord,
                                 readAnyKey,
                                 !,
-                                playBvB(BOARD, PLAYER).
+                                playBvB(BOARD, PLAYER, DIFFICULTY).

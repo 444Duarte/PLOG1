@@ -1,16 +1,25 @@
 :- use_module(library(plunit)).
 :- include('validation.pl').
 :- include('utilities.pl').
+:- include('bot.pl').
+:- include('display.pl').
 
 createBoard(
 [
 [ [0|0], [0|0], [0|0], [0|0], [0|0] ],
 [ [0|0], [1|2], [0|0], [0|0], [0|0] ],
-[ [0|0], [0|0], [0|0], [0|0], [0|0] ],
+[ [1|2], [2|1], [0|0], [0|0], [0|0] ],
 [ [0|0], [0|0], [0|0], [0|0], [0|0] ],
 [ [0|0], [0|0], [0|0], [0|0], [0|0] ]
 ]
 ).
+
+
+
+testBot:- createBoard(BOARD),
+          printBoardIndex(BOARD),    
+          botTurn(BOARD, RESULT, 1, 2),
+          printBoardIndex(RESULT).  
 
 setup(BOARD):- createBoard(BOARD).
 
@@ -43,7 +52,7 @@ test(BOARD, true) :-    setup(BOARD),
 test(BOARD, true) :-    setup(BOARD),
                         validCoords(BOARD, 2, 1).
 
-test(BOARD, true) :-    setup(BOARD),
+test(BOARD, fail) :-    setup(BOARD),
                         validCoords(BOARD, 1, 2).
 
 test(BOARD, fail) :-    setup(BOARD),
@@ -78,6 +87,8 @@ test(BOARD, fail) :-    setup(BOARD),
                         PLAYER == 1.
 :- end_tests(insertion).
 
+
+
 % Validation calculating triangle type
 :- begin_tests(triangleType).
 test(BOARD, true(TYPE == 2)) :-   setup(BOARD),
@@ -90,9 +101,9 @@ test(BOARD, true(TYPE == 1)) :-   setup(BOARD),
 
 % Validation number empty cells
 :- begin_tests(emptyCells).
-test(BOARD, true(N == 24)) :- setup(BOARD),
+test(BOARD, true(N == 22)) :- setup(BOARD),
                                 numberEmptyCells(BOARD, N).
-test(BOARD, true(N == 23)) :- setup(BOARD),
+test(BOARD, true(N == 21)) :- setup(BOARD),
                                 insertTriangle(0, 0, BOARD, RESULT, [1|1]),
                                 numberEmptyCells(RESULT, N).
 test(BOARD, true) :-    setup(BOARD),
