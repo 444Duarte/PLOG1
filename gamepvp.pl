@@ -20,10 +20,9 @@ initialPlayPvP(BOARD) :-   printInvalidCoord,
 % One player has won
 playPvP(BOARD, PLAYER) :-  nextPlayer(PLAYER, PREVIOUS_PLAYER),
                         checkWinner(BOARD, PREVIOUS_PLAYER),
-                        !,
                         clearConsole,
                         printBoardIndex(BOARD),
-                        printWinner(PREVIOUS_PLAYER).
+                        printWinner(PREVIOUS_PLAYER), !.
 % No one won yet, has playable cells
 playPvP(BOARD, PLAYER) :-  hasAvailableCells(BOARD),
                         clearConsole,
