@@ -23,10 +23,12 @@ findFinishRow(BOARD, PLAYER, NCOLS, NROWS, X, Y, 0):- findFinishRow(BOARD, PLAYE
 findFinishRow(BOARD, PLAYER, NCOLS,NROWS, X, Y,ROW):-   ROW > 0,
                                                         ROW < NROWS,
                                                         ROWN is ROW+1,
-                                                        (findFinishRow(BOARD, PLAYER, NCOLS, NROWS, X,Y, ROWN) ; findFinishCols(BOARD, PLAYER, NCOLS, X, Y, NCOLS,ROW)).
+                                                        (findFinishRow(BOARD, PLAYER, NCOLS, NROWS, X,Y, ROWN) ; 
+														(INIT_COL is NCOLS-1, findFinishCols(BOARD, PLAYER, NCOLS, X, Y, INIT_COL,ROW))).
 
-findFinishCols(BOARD, PLAYER, NCOLS, X, Y, NCOLS, ROW):-COL is NCOLS-1,
-														findFinishCols(BOARD, PLAYER, NCOLS, X, Y, COL, ROW).
+findFinishCols(BOARD, PLAYER, NCOLS, X, Y, CURR_COL, ROW):-	NCOLS == CURR_COL+1,
+															COL is NCOLS-1,
+															findFinishCols(BOARD, PLAYER, NCOLS, X, Y, COL, ROW).
 findFinishCols(BOARD, PLAYER, NCOLS, X, Y, COL, ROW):-  COL > 0,
 														COL < NCOLS,
                                                         getTriangle(BOARD, COL, ROW,VALUE),
