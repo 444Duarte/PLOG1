@@ -68,7 +68,7 @@ possibleFinishCell(BOARD, PLAYER, X, Y, COL, ROW):- COL1 is COL+1,
                                                     ),
                                                     COL2 is COL-1,
                                                     getTriangle(BOARD, COL2, ROW, VALUE1),
-                                                    VALUE1 =:= [0|0],
+                                                    VALUE1 == [0|0],
                                                     X is COL-1,
                                                     Y is ROW.
 
