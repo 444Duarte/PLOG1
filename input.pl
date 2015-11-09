@@ -36,7 +36,7 @@ readBoardSize(C, R) :- prompt(_, 'Number of Columns: '),
                                 C_INT is C_INT_CHAR-48,
                                 (C_INT < 10 ->
                                     C = C_INT;
-                                    C_INT_2 is c_INT - 7,
+                                    C_INT_2 is C_INT - 7,
                                 C = C_INT_2),
                                 prompt(_, 'Number of Rows: '),
                                 get_char(R_CHAR),

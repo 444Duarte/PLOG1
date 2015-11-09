@@ -32,7 +32,7 @@ playBvB(BOARD, PLAYER, DIFFICULTY) :-  hasAvailableCells(BOARD),
                         makeMoveBvB(BOARD, NEW_BOARD, PLAYER, DIFFICULTY),
                         nextPlayer(PLAYER, NEXT_PLAYER),
                         !,
-                        playBvB(NEW_BOARD, NEXT_PLAYER).
+                        playBvB(NEW_BOARD, NEXT_PLAYER, DIFFICULTY).
 % Draw
 playBvB(_, _, _) :- printDraw. 
 
