@@ -17,62 +17,105 @@ getRandomCoord(BOARD, COLUMN, ROW):-getNumberRows(BOARD, NROWS),
 % Check for a possible winning position                            
 getFinishCoord(BOARD, PLAYER, X, Y):-   getNumberRows(BOARD, NROWS),
                                         getNumberCols(BOARD, NCOLS),
-                                        findFinishRow(BOARD, PLAYER, NCOLS,NROWS, X, Y, 0).
+                                        findFinishRow(BOARD, PLAYER, NCOLS,NROWS, X, Y, 0,BOARD).
 
-findFinishRow(BOARD, PLAYER, NCOLS, NROWS, X, Y, 0):- findFinishRow(BOARD, PLAYER, NCOLS, NROWS, X, Y, 1).
-findFinishRow(BOARD, PLAYER, NCOLS,NROWS, X, Y,ROW):-   ROW > 0,
-                                                        ROW < NROWS,
-                                                        ROWN is ROW+1,
-                                                        (findFinishRow(BOARD, PLAYER, NCOLS, NROWS, X,Y, ROWN) ; 
-														(INIT_COL is NCOLS-1, findFinishCols(BOARD, PLAYER, NCOLS, X, Y, INIT_COL,ROW))).
+findFinishRow(BOARD, PLAYER, NCOLS, NROWS, X, Y, 0,[_|NEXT_ROWS]):- findFinishRow(BOARD, PLAYER, NCOLS, NROWS, X, Y, 1, NEXT_ROWS).
+findFinishRow(BOARD, PLAYER, NCOLS,NROWS, X, Y,ROW,[CURR_ROW|NEXT_ROWS]):-  ROW > 0,
+                                                                            IROWS is NROWS-1,
+                                                                            ROW < IROWS,
+                                                                            ROWN is ROW+1,
+                                                                            (
+                                                                                findFinishRow(BOARD, PLAYER, NCOLS, NROWS, X,Y, ROWN, NEXT_ROWS) 
+                                                                            ;
+                                                                                (INIT_COL is 0,
+                                                                                findFinishCols(BOARD, PLAYER, NCOLS, X, Y, INIT_COL,ROW, CURR_ROW))
+                                                                            ).
 
-findFinishCols(BOARD, PLAYER, NCOLS, X, Y, CURR_COL, ROW):-	NCOLS == CURR_COL+1,
-															COL is NCOLS-1,
-															findFinishCols(BOARD, PLAYER, NCOLS, X, Y, COL, ROW).
-findFinishCols(BOARD, PLAYER, NCOLS, X, Y, COL, ROW):-  COL > 0,
-														COL < NCOLS,
-                                                        getTriangle(BOARD, COL, ROW,VALUE),
-                                                        ((COLN is COL-1 , findFinishCols(BOARD, PLAYER, NCOLS, X, Y, COLN, ROW)) 
-														; (VALUE \= [0|0], possibleFinishCell(BOARD, PLAYER, X, Y, COL, ROW)) ).
-
-
-possibleFinishCell(BOARD, PLAYER, X, Y, COL, ROW):- COL1 is COL-1,
-                                                    getTriangle(BOARD, COL1, ROW, [TP_LEFT|PL_LEFT]),          %FINISH CELL DOWN OR FINISH CELL UP
-                                                    PL_LEFT == PLAYER,
-                                                    COL2 is COL+1,
-                                                    getTriangle(BOARD, COL2, ROW, [TP_RIGHT|PL_RIGHT]),
-                                                    PL_RIGHT == PLAYER,
-                                                    ((TP_LEFT == 2, ROWN is ROW+1, getTriangle(BOARD, COL, ROW+1, VALUE), VALUE == [0|0], X is COL, Y is ROW+1) 
-                                                    ;(TP_RIGHT == 1,ROWN is ROW-1, getTriangle(BOARD, COL, ROWN, VALUE), VALUE == [0|0], X is COL, Y is ROW-1)
-                                                    ;fail
-                                                    ).
+findFinishCols(BOARD, PLAYER, NCOLS, X, Y, 0, ROW,[CURR_CELL|NEXT_CELLS]):-    findFinishCols(BOARD, PLAYER, NCOLS, X, Y, 1, ROW, CURR_CELL, NEXT_CELLS).
+findFinishCols(BOARD, PLAYER, NCOLS, X, Y, COL, ROW,LEFT_CELL,[CURR_CELL|NEXT_CELLS]):- COL > 0,
+                                                                                        ICOLS is NCOLS-1,
+                                														COL < ICOLS,
+                                                                                        VALUE = CURR_CELL,
+                                                                                        (   
+                                                                                            (VALUE \= [0|0],
+                                                                                            possibleFinishCell(BOARD, PLAYER, X, Y, COL, ROW, LEFT_CELL, NEXT_CELLS)
+                                                                                            )
+                                                                                        ; 
+                                                                                            (COLN is COL+1 , 
+                                                                                            findFinishCols(BOARD, PLAYER, NCOLS, X, Y, COLN, ROW, CURR_CELL,NEXT_CELLS))      
+                                                                                        ).
 
 
-possibleFinishCell(BOARD, PLAYER, X, Y, COL, ROW):- COL1 is COL-1,
-                                                    getTriangle(BOARD, COL1, ROW, [TP_LEFT|PL_LEFT]),          %FINISH CELL RIGHT
-                                                    PL_LEFT == PLAYER,
-                                                    ((TP_LEFT == 2, (ROWN is ROW+1,getTriangle(BOARD, COL, ROWN, VALUE), VALUE == [TP_LEFT|PL_LEFT]))
-                                                    ;(TP_LEFT == 1, (ROWN is ROW-1, getTriangle(BOARD, COL, ROWN, VALUE), VALUE == [TP_LEFT|PL_LEFT]))
-                                                    ;fail
-                                                    ),
-                                                    COL2 is COL+1,
-                                                    getTriangle(BOARD, COL2, ROW, VALUE1),
-                                                    VALUE1 == [0|0],
-                                                    X is COL+1,
-                                                    Y is ROW.
 
-possibleFinishCell(BOARD, PLAYER, X, Y, COL, ROW):- COL1 is COL+1,
-                                                    getTriangle(BOARD, COL1, ROW, [TP_RIGHT|PL_RIGHT]),          %FINISH CELL LEFT
-                                                    PL_RIGHT == PLAYER,
-                                                    ((TP_RIGHT == 2, (ROWN is ROW+1, getTriangle(BOARD, COL, ROWN, VALUE),VALUE == [TP_RIGHT|PL_RIGHT]))
-                                                    ;(TP_RIGHT == 1, ROWN is ROW-1,getTriangle(BOARD, COL, ROWN, VALUE), VALUE == [TP_RIGHT|PL_RIGHT])
-                                                    ;fail
-                                                    ),
-                                                    COL2 is COL-1,
-                                                    getTriangle(BOARD, COL2, ROW, VALUE1),
-                                                    VALUE1 == [0|0],
-                                                    X is COL-1,
-                                                    Y is ROW.
+
+possibleFinishCell(BOARD, PLAYER, X, Y, COL, ROW, LEFT_CELL,[RIGHT_CELL|_]):-   [TP_LEFT|PL_LEFT] = LEFT_CELL,          %FINISH CELL DOWN OR FINISH CELL UP
+                                                                                PL_LEFT == PLAYER,
+                                                                                [TP_RIGHT|PL_RIGHT] = RIGHT_CELL,
+                                                                                PL_RIGHT == PLAYER,
+                                                                                (
+                                                                                    (TP_LEFT == 2, 
+                                                                                    ROWN is ROW+1,
+                                                                                    getTriangle(BOARD, COL, ROW+1, VALUE),
+                                                                                    VALUE == [0|0],
+                                                                                    X is COL,
+                                                                                    Y is ROW+1
+                                                                                    )
+                                                                                ;
+                                                                                    (TP_RIGHT == 1,
+                                                                                    ROWN is ROW-1,
+                                                                                    getTriangle(BOARD, COL, ROWN, VALUE),
+                                                                                    VALUE == [0|0],
+                                                                                    X is COL,
+                                                                                    Y is ROW-1
+                                                                                    )
+                                                                                ;
+                                                                                    fail
+                                                                                ).
+
+
+possibleFinishCell(BOARD, PLAYER, X, Y, COL, ROW, LEFT_CELL,[RIGHT_CELL|_]):-   [TP_LEFT|PL_LEFT] = LEFT_CELL,          %FINISH CELL RIGHT
+                                                                                PL_LEFT == PLAYER,
+                                                                                (
+                                                                                    (TP_LEFT == 2, 
+                                                                                        (ROWN is ROW+1,
+                                                                                        getTriangle(BOARD, COL, ROWN, VALUE), 
+                                                                                        VALUE == [TP_LEFT|PL_LEFT])
+                                                                                    )
+                                                                                ;
+                                                                                    (TP_LEFT == 1, 
+                                                                                        (ROWN is ROW-1, 
+                                                                                        getTriangle(BOARD, COL, ROWN, VALUE),
+                                                                                        VALUE == [TP_LEFT|PL_LEFT])
+                                                                                    )
+                                                                                ;
+                                                                                    fail
+                                                                                ),
+                                                                                VALUE1 = RIGHT_CELL,
+                                                                                VALUE1 == [0|0],
+                                                                                X is COL+1,
+                                                                                Y is ROW.
+
+possibleFinishCell(BOARD, PLAYER, X, Y, COL, ROW, LEFT_CELL,[RIGHT_CELL|_]):-   [TP_RIGHT|PL_RIGHT] = RIGHT_CELL,          %FINISH CELL LEFT
+                                                                                PL_RIGHT == PLAYER,
+                                                                                (
+                                                                                    (TP_RIGHT == 2, 
+                                                                                        (ROWN is ROW+1, 
+                                                                                        getTriangle(BOARD, COL, ROWN, VALUE),
+                                                                                        VALUE == [TP_RIGHT|PL_RIGHT])
+                                                                                    )
+                                                                                ;
+                                                                                    (TP_RIGHT == 1,
+                                                                                    ROWN is ROW-1,
+                                                                                    getTriangle(BOARD, COL, ROWN, VALUE),
+                                                                                    VALUE == [TP_RIGHT|PL_RIGHT]
+                                                                                    )
+                                                                                ;
+                                                                                    fail
+                                                                                ),
+                                                                                VALUE1 = LEFT_CELL,
+                                                                                VALUE1 == [0|0],
+                                                                                X is COL-1,
+                                                                                Y is ROW.
 
 
 
